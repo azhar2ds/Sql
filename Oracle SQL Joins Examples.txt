@@ -1,0 +1,360 @@
+To check oracle database binaries installed or not
+cat /etc/oratab
+
+To check whether the database is running or not
+# or $ ps -ef | grep pmon
+
+
+Startup database stages
+1. Nomount (pfile/spfile)
+2. Mount (Controlfile)
+3. Open (any valid user/s do their activities normally)
+
+shutdown database stages
+shutdown immediate
+shutdown normal / shutdown
+shutdown absorb (improperly close the database)
+
+To check the oracle database backgroud processes
+# or $ ps -ef | grep ora
+
+
+setting up sql buffer
+ set lines 150
+ set pages 100
+/
+
+SQL Operators
+------------
+To get data as per the requirement for sorting purpose..
+
+Types of Operators
+------------------
+
+Arithmetic Operators
+(+  -  *  /)
+
+Logical Operators
+(and or)
+
+Comparitive Operators
+(>  <  =  >=  <=  <>  =!)
+
+Special Operators
+(between  in   is null)
+
+Negation Operators
+(not between   not in   is not null)
+
+
+c/oldname/newname (for any column/s to be apply)
+c--Change in sql prompt
+
+select empno,ename,job,sal,sal+1000 from emp  where deptno=20;
+
+select empno as eno,ename as empname,job as desg,sal,sal+1000Netpay,deptno from emp  where deptno=20;
+
+select empno "e no",ename as empname,job as desg,sal,sal+1000Netpay,deptno from emp  where deptno=20
+
+Concatination (||)
+SQL> select empno||ename||sal from emp;
+
+
+Literals ' . . .'
+select empno||' ' ||ename||' '||sal from emp;
+
+select empno||' is a name of ' ||ename||' and the salary is '||sal from emp
+
+select empno||' is a name of ' ||ename||' and the salary is '||sal as "Employee details" from emp;
+
+select * from emp where sal between 1000 and 2000
+select * from emp where sal>30000 or deptno=100
+select * from emp where sal>3000 or deptno=100
+select * from emp where sal>3000 or deptno=10;
+select * from emp where deptno=30 and sal>1000;
+select * from emp where deptno in (10,20);
+
+select * from emp where deptno not in (10,
+20) and sal>2000
+select empno,ename,job,sal,sal*10/100bogus,deptno from emp;
+
+Like patterns
+select * from emp where ename like '%T_'
+
+select * from emp where comm is null;
+select * from emp where comm is not null;
+
+select * from emp order by sal desc
+select * from emp order by sal 
+select * from emp order by ename desc
+
+
+SQL Functions
+--------------
+
+Types of Functions in SQL
+
+1. Single Row Functions
+     Number function, character function, convertion, date
+
+2. Multiple Row Functions
+   count()  avg()  max()  min()  sum()
+
+
+syedmohammedali236@gmail.com
+azhar2ds@gmail.com
+abubakersedeg10@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+--DROP TABLE employees PURGE;
+--DROP TABLE departments PURGE;
+
+CREATE TABLE departments (
+  department_id   NUMBER(2) CONSTRAINT departments_pk PRIMARY KEY,
+  department_name VARCHAR2(14),
+  location        VARCHAR2(13)
+);
+
+INSERT INTO departments VALUES (10,'ACCOUNTING','NEW YORK');
+INSERT INTO departments VALUES (20,'RESEARCH','DALLAS');
+INSERT INTO departments VALUES (30,'SALES','CHICAGO');
+INSERT INTO departments VALUES (40,'OPERATIONS','BOSTON');
+COMMIT;
+
+
+CREATE TABLE employees (
+  employee_id   NUMBER(4) CONSTRAINT employees_pk PRIMARY KEY,
+  employee_name VARCHAR2(10),
+  job           VARCHAR2(9),
+  manager_id    NUMBER(4),
+  hiredate      DATE,
+  salary        NUMBER(7,2),
+  commission    NUMBER(7,2),
+  department_id NUMBER(2) CONSTRAINT emp_department_id_fk REFERENCES departments(department_id)
+);
+
+INSERT INTO employees VALUES (7369,'SMITH','CLERK',7902,to_date('17-12-1980','dd-mm-yyyy'),800,NULL,20);
+INSERT INTO employees VALUES (7499,'ALLEN','SALESMAN',7698,to_date('20-2-1981','dd-mm-yyyy'),1600,300,30);
+INSERT INTO employees VALUES (7521,'WARD','SALESMAN',7698,to_date('22-2-1981','dd-mm-yyyy'),1250,500,30);
+INSERT INTO employees VALUES (7566,'JONES','MANAGER',7839,to_date('2-4-1981','dd-mm-yyyy'),2975,NULL,20);
+INSERT INTO employees VALUES (7654,'MARTIN','SALESMAN',7698,to_date('28-9-1981','dd-mm-yyyy'),1250,1400,30);
+INSERT INTO employees VALUES (7698,'BLAKE','MANAGER',7839,to_date('1-5-1981','dd-mm-yyyy'),2850,NULL,30);
+INSERT INTO employees VALUES (7782,'CLARK','MANAGER',7839,to_date('9-6-1981','dd-mm-yyyy'),2450,NULL,10);
+INSERT INTO employees VALUES (7788,'SCOTT','ANALYST',7566,to_date('13-JUL-87','dd-mm-rr')-85,3000,NULL,20);
+INSERT INTO employees VALUES (7839,'KING','PRESIDENT',NULL,to_date('17-11-1981','dd-mm-yyyy'),5000,NULL,10);
+INSERT INTO employees VALUES (7844,'TURNER','SALESMAN',7698,to_date('8-9-1981','dd-mm-yyyy'),1500,0,30);
+INSERT INTO employees VALUES (7876,'ADAMS','CLERK',7788,to_date('13-JUL-87', 'dd-mm-rr')-51,1100,NULL,20);
+INSERT INTO employees VALUES (7900,'JAMES','CLERK',7698,to_date('3-12-1981','dd-mm-yyyy'),950,NULL,30);
+INSERT INTO employees VALUES (7902,'FORD','ANALYST',7566,to_date('3-12-1981','dd-mm-yyyy'),3000,NULL,20);
+INSERT INTO employees VALUES (7934,'MILLER','CLERK',7782,to_date('23-1-1982','dd-mm-yyyy'),1300,NULL,10);
+COMMIT;
+===============================================================
+
+Example of an ANSI INNER JOIN
+-----------------------------
+
+SELECT d.department_name,
+       e.employee_name
+FROM   departments d
+       JOIN employees e ON d.department_id = e.department_id
+WHERE  d.department_id >= 30
+ORDER BY d.department_name;
+
+Non-ANSI equivalent of the previous statement.
+----------------------------------------------
+
+SELECT d.department_name,
+       e.employee_name
+FROM   departments d, employees e
+WHERE  d.department_id = e.department_id
+AND    d.department_id >= 30
+ORDER BY d.department_name;
+
+Example of an ANSI LEFT OUTER JOIN.
+----------------------------------
+
+SELECT d.department_name,
+       e.employee_name     
+FROM   departments d
+       LEFT OUTER JOIN employees e ON d.department_id = e.department_id
+WHERE  d.department_id >= 30
+ORDER BY d.department_name, e.employee_name;
+
+
+Non-ANSI equivalent of the previous statement. Notice the "(+)" is used to indicate the side of the join condition that may be missing. For a multi-column join condition, each column must have the "(+)" present. Unlike the ANSI join syntax, the non-ANSI join syntax is not affected by the order of the tables.
+-----------------------------------------------------
+
+SELECT d.department_name,
+       e.employee_name      
+FROM   departments d, employees e
+WHERE  d.department_id = e.department_id (+) 
+AND    d.department_id >= 30
+ORDER BY d.department_name, e.employee_name;
+
+
+ANSI join syntax, filters on columns from the outer joined table are included in the join itself, rather than being placed in the WHERE clause.
+--------------------------------------------------------------------------
+SELECT d.department_name,
+       e.employee_name     
+FROM   departments d
+       LEFT OUTER JOIN employees e ON d.department_id = e.department_id AND e.salary >= 2000
+WHERE  d.department_id >= 30
+ORDER BY d.department_name, e.employee_name;
+
+non-ANSI join syntax, the "(+)" is used to indicate a column may have a NULL value as a result of an outer join.
+-----------------------------------------------
+SELECT d.department_name,
+       e.employee_name      
+FROM   departments d, employees e
+WHERE  d.department_id = e.department_id (+)
+AND    e.salary (+) >= 2000
+AND    d.department_id >= 30
+ORDER BY d.department_name, e.employee_name;
+
+
+RIGHT [OUTER] JOIN
+
+The RIGHT [OUTER] JOIN is the opposite of the LEFT [OUTER] JOIN. It returns all valid rows from the table on the right side of the JOIN keyword, along with the values from the table on the left side, or NULLs if a matching row doesn't exist. All points raised in the previous section apply here also.
+------------------------------------------------------------------
+SELECT d.department_name,
+       e.employee_name     
+FROM   employees e
+       RIGHT OUTER JOIN departments d ON e.department_id = d.department_id
+WHERE  d.department_id >= 30
+ORDER BY d.department_name, e.employee_name;
+
+
+FULL [OUTER] JOIN
+
+A FULL [OUTER] JOIN combines all the rows from the tables on the left and right sides of the join. If there is a conventional match it is made. If either side has missing data, it is replaced by NULLs, rather than throwing the row away.
+
+To see a working example, we need to add another employee who is not assigned to a department.
+
+INSERT INTO employees VALUES (8888,'JONES','DBA',null,to_date('02-1-1982','dd-mm-yyyy'),1300,NULL,NULL);
+COMMIT;
+
+SELECT d.department_name,
+       e.employee_name     
+FROM   employees e
+       FULL OUTER JOIN departments d ON e.department_id = d.department_id
+ORDER BY d.department_name, e.employee_name;
+
+
+no direct equivalent of a full outer join using the non-ANSI join syntax, but we can recreate it by combining two outer join queries using a UNION ALL
+------------------------------------------------------------------
+SELECT d.department_name,
+       e.employee_name      
+FROM   employees e, departments d
+WHERE  e.department_id = d.department_id (+)
+UNION ALL
+SELECT d.department_name,
+       e.employee_name      
+FROM   departments d, employees e
+WHERE  d.department_id = e.department_id (+)
+AND    e.employee_name IS NULL
+ORDER BY 1, 2;
+
+
+example of an ANSI CROSS JOIN.
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e
+       CROSS JOIN departments d
+ORDER BY e.employee_name, d.department_name;
+
+
+non-ANSI equivalent of the previous statement. Notice, there are no join conditions in the WHERE clause.
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e, departments d
+ORDER BY e.employee_name, d.department_name;
+
+
+NATURAL JOIN
+
+A NATURAL JOIN is a variant on an INNER JOIN. The join columns are determined implicitly, based on the column names. Any columns that share the same name between the two tables are assumed to be join columns. Here is an example using the ANSI join syntax.
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e
+       NATURAL JOIN departments d
+ORDER BY e.employee_name, d.department_name;
+
+Using a NATURAL JOIN is a bad idea. If someone adds a new column to one of the tables that happens to have the same name as a column in the other table, they may break any existing natural joins. It is effectively a bug waiting to happen.
+
+You can't apply any aliased filters to columns used in natural joins, as shown in the following example.
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e
+       NATURAL JOIN departments d
+WHERE  d.department_id = 20
+ORDER BY e.employee_name;
+
+WHERE  d.department_id = 20
+       *
+ERROR at line 5:
+ORA-25155: column used in NATURAL join cannot have qualifier
+
+
+Instead you must remove the alias, which in other circumstances would result in an ambiguous reference error.
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e
+       NATURAL JOIN departments d
+WHERE  department_id = 20
+ORDER BY e.employee_name;
+
+
+[INNER] JOIN ... USING
+
+The INNER JOIN ... USING is almost a half-way house between a conventional INNER JOIN and a NATURAL JOIN. The join is made using columns with matching names in each table, but you have to specify the columns to be used, not the whole condition. This allows you to join on a subset of the columns common to both tables.
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e
+       JOIN departments d USING (department_id)
+ORDER BY e.employee_name;
+
+
+
+This is a safe join syntax as it can't be affected by addition of columns to either table. Similar to the NATURAL JOIN, you can't apply any aliased filters to columns used in the join, but if you remove the alias it works.
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e
+       JOIN departments d USING (department_id)
+WHERE  d.department_id = 20
+ORDER BY e.employee_name;
+
+WHERE  d.department_id = 20
+       *
+ERROR at line 5:
+ORA-25154: column part of USING clause cannot have qualifier
+
+SQL>
+
+
+SELECT e.employee_name,
+       d.department_name
+FROM   employees e
+       JOIN departments d USING (department_id)
+WHERE  department_id = 20
+ORDER BY e.employee_name;
+
+
+
+
