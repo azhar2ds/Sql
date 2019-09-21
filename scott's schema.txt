@@ -1,0 +1,95 @@
+
+create user user1 identified by password.. 
+grant connect,resource to user1;
+
+-- Shell Script for creating scott's schema (data)
+-- DROP TABLE EMP;
+-- DROP TABLE DEPT;
+-- DROP TABLE SALGRADE;
+
+drop table emp;
+drop table dept;
+drop table salgrade;
+
+-----------------------------------------------------------------
+CREATE TABLE EMP
+(
+  empno   number(3),constraint empno_pk primary key(empno),
+  ename   VARCHAR2(10),
+  job     VARCHAR2(10),
+  sal     number(9,2),
+  hiredate date,
+  comm     DECIMAL(7,2),
+  deptno   number(3)
+);
+
+CREATE TABLE DEPT
+(
+  deptno number(3),constraint deptno_pk primary key(deptno),
+  dname  VARCHAR(14),
+  loc    VARCHAR(14)
+);
+
+CREATE TABLE SALGRADE
+(
+  grade      INTEGER NOT NULL,
+  losal      INTEGER NOT NULL,
+  hisal      INTEGER NOT NULL
+);
+
+-----------------------------------------------------------------
+
+Adding constraint (FK) to emp(dept)
+-----------------------------------
+
+alter table emp add constraint deptno_fk foreign key(deptno)
+references dept(deptno);
+
+-----------------------------------------------------------------
+
+Inserting records in DEPT table
+-------------------------------
+
+insert into dept values (10,'sales','india');
+insert into dept values (30,'stocks','usa');
+insert into dept values (20,'suppliers','uk');
+insert into dept values (50,'finance','canada');
+insert into dept values (40,'marketing','australia');
+
+-----------------------------------------------------------------
+
+
+Inserting records in EMP table
+------------------------------
+
+insert into emp values (101,'abdullah','manager',35000,'12-jan-1988',122.23,30);
+insert into emp values (103,'ravi','teamlead',28000,'24-sep-1990',0,50);
+insert into emp values (108,'peter','analyst',19500,'29-mar-2001',0,20);
+insert into emp values (104,'satish','dba',28500,'17-may-1998',0,10);
+insert into emp values (106,'sam','operator',12000,'11-jul-2003',11.50,40);
+insert into emp values (102,'zishan','collector',27900,'01-aug-2005',0,20);
+insert into emp values (107,'azam','operator',15000,'29-dec-2004',68.50,40);
+insert into emp values (105,'laxmi','programmer',27500,'09-feb-1990',100.25,30);
+insert into emp values (112,'javed','teamlead',27500,'04-apr-2001',0,20);
+insert into emp values (114,'vinod','operator',11500,'18-nov-2008',112.20,40);
+insert into emp values (109,'jaffar','dba',29200,'14-jan-2001',0,10);
+insert into emp values (111,'shaik','operator',11500,'29-mar-2002',90.50,20);
+insert into emp values (110,'roshan','security',85000,'12-jan-1988',110.30,40);
+insert into emp values (113,'ahmed','security',82000,'12-jan-1988',122.50,10);
+
+-----------------------------------------------------------------
+
+
+Inserting records in salgrade table
+-----------------------------------
+
+insert into salgrade values (1,700,1200);
+insert into salgrade values (2,1201,1400);
+insert into salgrade values (3,1401,2000);
+insert into salgrade values (4,2001,3000);
+insert into salgrade values (5,3001,9999);
+
+-----------------------------------------------------------------
+
+
+
